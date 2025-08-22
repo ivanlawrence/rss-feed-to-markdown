@@ -119,9 +119,7 @@ const generateFeedMarkdown = (template, entry) => {
   const link = entry.link?.[0]?.$?.href || entry.link?.[0] || '';
   const titleRaw = typeof entry.title?.[0] === 'string' ? entry.title[0] : entry.title?.[0]?._ || '';
   const title = titleRaw.replace(/[^\w\s-]/g, '') || '';
-  const slug_raw = link?.split('/');
-  const lastSegment = slug_raw?.[slug_raw.length - 1] || '';
-  const slug = lastSegment.split('.')?.[0] || '';
+  const slug = sanitize( `${title.toLowerCase().replace(/\s+/g, '-')}` ).substring(0, 50);
 
   // Extract and clean up content for Markdown conversion and description
   const content =
