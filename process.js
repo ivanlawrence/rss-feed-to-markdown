@@ -119,6 +119,9 @@ const generateFeedMarkdown = (template, entry) => {
   const link = entry.link?.[0]?.$?.href || entry.link?.[0] || '';
   const titleRaw = typeof entry.title?.[0] === 'string' ? entry.title[0] : entry.title?.[0]?._ || '';
   const title = titleRaw.replace(/[^\w\s-]/g, '') || '';
+  const slug_raw = link?.split('/');
+  const lastSegment = slug_raw?.[slug_raw.length - 1] || '';
+  const slug = lastSegment.split('.')?.[0] || '';
 
   // Extract and clean up content for Markdown conversion and description
   const content =
@@ -172,6 +175,7 @@ const generateFeedMarkdown = (template, entry) => {
     id,
     date,
     link: link.trim(),
+    slug: slug.trim(),
     title,
     content,
     markdown,
@@ -193,6 +197,7 @@ const generateOutput = (template, data) => {
     .replaceAll('[ID]', data.id || '')
     .replaceAll('[DATE]', data.date || '')
     .replaceAll('[LINK]', data.link || '')
+    .replaceAll('[SLUG]', data.slug || '')
     .replaceAll(
       '[TITLE]',
       (data.title.trim() || '').replace(/\s+/g, ' '),
